@@ -7,13 +7,13 @@ import Logo from "../../assets/logo.png";
 const Footer = () => {
   return (
     <footer className="w-full lg:px-28 md:px-16 sm:px-7 px-4 py-8 bg-gray-100 dark:bg-neutral-900/70">
-      <div className="grid grid-cols-5 gap-5">
+      <div className="grid md:grid-cols-5 gap-5">
         <div className="space-y-5 col-span-2">
           <Link to="/" className='text-xl text-neutral-800 dark:text-neutral-200 font-bold'>
             <img src={Logo} alt="logo" className="w-44 h-auto object-contain" />
           </Link>
           <p className="text-neutral-600 dark:text-neutral-500 text-base font-normal pr-10">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam placeat corporis, rerum laborum optio laboriosam perferendis sit culpa doloribus, tempora aliquam repellendus reprehenderit, ullam alias.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam placeat 
           </p>
         </div>
 
@@ -53,7 +53,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="space-y-7">
+        {/* <div className="space-y-7">
           <h1 className="text-lg font-medium">Get In Touch</h1>
           <div className="space-y-4">
             <div className="flex gap-x-2">
@@ -92,7 +92,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </footer>
