@@ -64,8 +64,9 @@ const ReserveTickets=(data)=>{
       });
     }, []);
 
-    const handleReserveClick=(item)=>{
-navigate('/book-seat')
+    const handleReserveClick=(seatPrice)=>{
+      console.log("--seatPrice--",seatPrice)
+navigate('/book-seat',{state:{seatPrice}})
     }
 
 
@@ -97,7 +98,7 @@ navigate('/book-seat')
               <div>
                 <button
                   className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick(item)}
+                  onClick={() => handleReserveClick(item.price)}
                 >
                   Reserve Seat
                 </button>
