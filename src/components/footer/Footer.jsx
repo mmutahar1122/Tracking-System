@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaMapPin } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
+import bus from '../../assets/bus.png'
 
 import Logo from "../../assets/logo.png";
 
@@ -10,7 +11,7 @@ const Footer = () => {
       <div className="grid md:grid-cols-5 gap-5">
         <div className="space-y-5 col-span-2">
           <Link to="/" className='text-xl text-neutral-800 dark:text-neutral-200 font-bold'>
-            <img src={Logo} alt="logo" className="w-44 h-auto object-contain" />
+            <img src={bus} alt="logo" className="w-44 h-auto object-contain" />
           </Link>
           <p className="text-neutral-600 dark:text-neutral-500 text-base font-normal pr-10">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam placeat 
@@ -21,16 +22,16 @@ const Footer = () => {
           <h1 className="text-lg font-medium">About Us</h1>
           <ul className="space-y-2 text-neutral-600 dark:text-neutral-500 text-base font-normal">
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>About Us</Link>
+              <Link to="/about" className='hover:text-red-700 ease-in-out duration-300'>About</Link>
             </li>
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>Contact Us</Link>
+              <Link to="/terminals" className='hover:text-red-700 ease-in-out duration-300'>Terminals</Link>
             </li>
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>Privacy Policy</Link>
+              <Link to="#" className='hover:text-red-700 ease-in-out duration-300'>Services</Link>
             </li>
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>Terms and Conditions</Link>
+              <Link to="/contact-us" className='hover:text-red-700 ease-in-out duration-300'>Contact us</Link>
             </li>
           </ul>
         </div>
@@ -39,16 +40,16 @@ const Footer = () => {
           <h1 className="text-lg font-medium">Services</h1>
           <ul className="space-y-2 text-neutral-600 dark:text-neutral-500 text-base font-normal">
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>Safety Guarantee</Link>
+              <Link to="#" className='hover:text-red-700 ease-in-out duration-300'>Safety Guarantee</Link>
             </li>
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>FAQ & Support</Link>
+              <Link to="#" className='hover:text-red-700 ease-in-out duration-300'>FAQ & Support</Link>
             </li>
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>Luxury Buses</Link>
+              <Link to="#" className='hover:text-red-700 ease-in-out duration-300'>Luxury Buses</Link>
             </li>
             <li>
-              <Link to="#" className='hover:text-violet-600 ease-in-out duration-300'>Enough Facilities</Link>
+              <Link to="#" className='hover:text-red-700 ease-in-out duration-300'>Enough Facilities</Link>
             </li>
           </ul>
         </div>
