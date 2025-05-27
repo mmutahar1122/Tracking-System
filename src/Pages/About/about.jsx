@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import faisalabad from '../../assets/Terminals_Img/faisalabad.jpeg'
+
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -12,8 +14,8 @@ const About = () =>{
 }, []);
 
     return <>
-    <div className="md:flex block mt-2"  data-aos="zoom-in">
-        <div className="md:w-1/2"><img src="public/terminals_Img/faisalabad.jpeg" alt=""/>
+    <div className="md:flex block mt-2 gap-2"  data-aos="zoom-in">
+        <div className="md:w-1/2"><img src={faisalabad} alt=""/>
         </div>
         <div className="md:w-1/2">
         <p className="text-4xl text-red-700 font-bold  border-b-4 inline border-red-700">About Us</p>

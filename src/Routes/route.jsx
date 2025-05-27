@@ -1,12 +1,17 @@
 
 import {Routes, Route } from "react-router-dom"
+import Signup from "../Authentication/signup"
+import Signin from "../Authentication/signin"
+import AuthLayout from "../layout/authLayout"
 import Layout from "../layout/Section_Layout"
 import Home from "../Pages/Home/home"
 import About from '../Pages/About/about'
 import ReserveTickets from "../components/ReserveTickets/ReserveTickets"
 import BookSeat from "../components/ReserveTickets/BookSeat"
+import TicketReceipt from "../components/ReserveTickets/TicketReceipt"
 import Terminals from "../Pages/Terminals/terminals"
 import Contact from "../Pages/Contact/contact"
+
 
 
 
@@ -15,12 +20,24 @@ const RouteComponent=()=>{
     return<>
     <Routes>
         <Route 
+        path="/signup"
+        element={<AuthLayout component={Signup}/>}
+        />
+         <Route 
         path="/"
+        element={<AuthLayout component={Signin}/>}
+        />
+        <Route 
+        path="/home"
         element={<Layout component={Home} navbar={true} footer={true}/>}
         />
          <Route 
         path="/reserve-ticket"
         element={<Layout component={ReserveTickets} navbar={true} footer={true}/>}
+        />
+        <Route 
+        path="/receipt-ticket"
+        element={<Layout component={TicketReceipt} navbar={false} footer={false}/>}
         />
         <Route 
         path="/about"
