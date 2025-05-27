@@ -12,12 +12,12 @@ const lahoreRoutes = [
     { from: 'Lahore', to: 'Peshawar', duration: '8 Hrs', features: 'WiFi AC Charging Port', price: 1800 },
   ];
   const faisalabadRoutes = [
-    { from: 'Faisalabad', to: 'Sialkot', duration: '3.5 Hrs', features: 'AC Charging Port', price: 1600 },
-    { from: 'Faisalabad', to: 'Multan', duration: '4.5 Hrs', features: 'WiFi AC', price: 1100 },
-    { from: 'Faisalabad', to: 'Lahore', duration: '2 Hrs', features: 'Snacks AC Charging Port', price: 800 },
-    { from: 'Faisalabad', to: 'Rawalpindi', duration: '6 Hrs', features: 'WiFi Snacks AC', price: 1300 },
-    { from: 'Faisalabad', to: 'Karachi', duration: '15 Hrs', features: 'WiFi Snacks AC Charging Port Entertainment', price: 2800 },
-    { from: 'Faisalabad', to: 'Hyderabad', duration: '13 Hrs', features: 'AC Charging Port Snacks', price: 2500 },
+    { from: 'Faisalabad', locat:'Railway Road, near Railway Station, Faisalabad', busNo:'fsd-7878', dispatchTime:'8:00 AM', to: 'Sialkot', duration: '3.5 Hrs', features: 'AC Charging Port', price: 1600 },
+    { from: 'Faisalabad', locat:'Jhang Road, near Motorway Bypass, Faisalabad', busNo:'fsd-9845', dispatchTime:'10:00 AM', to: 'Multan', duration: '4.5 Hrs', features: 'WiFi AC', price: 1100 },
+    { from: 'Faisalabad', locat:'Main Samundri Road, near Sandal College, Faisalabad', busNo:'fsd-4534', dispatchTime:'12:00 PM', to: 'Lahore', duration: '2 Hrs', features: 'Snacks AC Charging Port', price: 800 },
+    { from: 'Faisalabad', locat:'Main Susan Road, opposite Iqbal Stadium, Faisalabad', busNo:'fsd-6342', dispatchTime:'02:00 PM', to: 'Rawalpindi', duration: '6 Hrs', features: 'WiFi Snacks AC', price: 1300 },
+    { from: 'Faisalabad', locat:'Jhang Road, near Bakar Mandi Market, Faisalabad', busNo:'fsd-6547', dispatchTime:'04:00 PM', to: 'Karachi', duration: '15 Hrs', features: 'WiFi Snacks AC Charging Port Entertainment', price: 2800 },
+    { from: 'Faisalabad', locat:'Millat Road, Millat Town, Faisalabad', busNo:'fsd-1265', to: 'Hyderabad', dispatchTime:'05:00 PM', duration: '13 Hrs', features: 'AC Charging Port Snacks', price: 2500 },
   ];
   const karachiRoutes = [
     { from: 'Karachi', to: 'Hyderabad', duration: '2 Hrs', features: 'AC', price: 1000 },
@@ -64,9 +64,9 @@ const ReserveTickets=(data)=>{
       });
     }, []);
 
-    const handleReserveClick=(seatPrice)=>{
-      console.log("--seatPrice--",seatPrice)
-navigate('/book-seat',{state:{seatPrice}})
+    const handleReserveClick=({price,busNo})=>{
+      console.log("--price--",price)
+navigate('/book-seat',{state:{price,busNo}})
     }
 
 
@@ -88,17 +88,23 @@ navigate('/book-seat',{state:{seatPrice}})
       ? faisalabadRoutes.map((item, index) => (
           <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600' key={index} data-aos="zoom-in">
             <div className='flex justify-between'>
-              <p>{item.from}</p>
+                <p>{item.from}</p>
               <p>{item.duration}</p>
               <p>{item.to}</p>
             </div>
-            <div>{item.features}</div>
+            <div><span className="font-medium">Features: </span>{item.features}</div>
+              <div className="">
+
+                <p><span className="font-medium">Dispatch:</span> {item.dispatchTime}</p>
+                <p><span className="font-medium">Location:</span> {item.locat}</p>
+                <p><span className="font-medium">Bus No:</span> {item.busNo}</p>
+                </div>
             <div className='flex justify-between items-center mt-5'>
-              <div className='font-bold'>Rs. {item.price}</div>
+              <div className='font-medium'>Rs. {item.price}</div>
               <div>
                 <button
                   className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick(item.price)}
+                  onClick={() => handleReserveClick({price: item.price, busNo: item.busNo })}
                 >
                   Reserve Seat
                 </button>
