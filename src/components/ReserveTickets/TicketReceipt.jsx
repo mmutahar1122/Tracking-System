@@ -1,7 +1,12 @@
-import QRCode from '../../assets/QR_Code.png'
-
+import QRcode from '../../assets/QR_Code.png'
+import QRCode from 'react-qr-code';
+import { useLocation } from 'react-router-dom';
 const TicketReceipt=()=>{
 
+    const location = useLocation();
+  const { TotalPrice, BusNo, To, From,selectedSeats } = location.state || {};
+
+  // console.log("to,from",To,From)
 
     return <>
     <div className="border rounded md:w-1/2 mx-auto flex justify-between p-2">
@@ -19,24 +24,25 @@ const TicketReceipt=()=>{
     <p>10:30 AM</p>
 
     <p className="font-bold">RESERVED:</p>
-    <p>2, 3, 4</p>
+    <p>{selectedSeats}</p>
 
     <p className="font-bold">FROM:</p>
-    <p>FAISALABAD</p>
+    <p>{From}</p>
 
     <p className="font-bold">TO:</p>
-    <p>ISLAMABAD</p>
+    <p>{To}</p>
 
     <p className="font-bold">BUS NO:</p>
-    <p>4536</p>
+    <p>{BusNo}</p>
     <p className="font-bold">AMOUNT:</p>
-    <p>4800/-</p>
+    <p>{TotalPrice}</p>
   </div>
 </div>
 
         <div>
             <p className='text-center font-bold'>QR Code</p>
-            <img src={QRCode} alt="" className='w-[200px]'/>
+    <QRCode value={`Total Seats: ${BusNo}, Total Price: ${TotalPrice}`} className='w-[200px]'/>
+            {/* <img src={QRcode} alt="" /> */}
         </div>
     </div>
     </>

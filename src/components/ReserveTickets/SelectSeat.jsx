@@ -3,14 +3,15 @@ import Seat from '../../assets/Bus_seat_Icon/seat-4.svg';
 import Driver from '../../assets/Bus_seat_Icon/Driver.svg';
 import busSeats from '../BusData/busdata'; // Assume this has array of seats
 import { useLocation,useNavigate } from 'react-router-dom';
-const BookSeat = () => {
+const SelectSeat = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const location = useLocation();
   const navigate=useNavigate();
-  const seatPrice = location.state?.price;
-  const busNo = location.state?.busNo;
+  const {price,busNo,from,to} = location.state;
 
-  console.log('Seat-=-==- Price:', seatPrice);
+  
+
+  console.log('select seat-=-==- Price:', from,to);
   const ReserveSeat = (seatNo) => {
     console.info("Clicked seat:", seatNo);
     setSelectedSeats((prev) =>
@@ -19,12 +20,21 @@ const BookSeat = () => {
       
   };
 
+  const currentPrice = selectedSeats?.length * price;
+
 if (selectedSeats.length >= 10) {
       alert("You can select a maximum of 10 seats.");
       return;
     }
     const continueBooking=()=>{
-      navigate('/receipt-ticket')
+      navigate('/receipt-ticket',{ 
+        state: { 
+          TotalPrice: currentPrice,
+          BusNo:busNo,
+          From:from,
+          To:to,
+          selectedSeats,selectedSeats
+        } })
 
     }
 
@@ -166,7 +176,22 @@ if (selectedSeats.length >= 10) {
                         </form>
 
           <div className="mt-2 mb-2">For Refund/Cancelation Kindly Review</div>
-
+<div className='flex justify-between'>
+            <div className="mt-1">
+            <strong>From</strong>
+            </div>
+            <div> <strong>{from}</strong>
+           
+            </div>
+          </div>
+          <div className='flex justify-between'>
+            <div className="mt-1">
+            <strong>To</strong>
+            </div>
+            <div> <strong>{to}</strong>
+           
+            </div>
+          </div>
           <div className='flex justify-between'>
             <div className="mt-1">
             <strong>Selected Seats:</strong>
@@ -179,7 +204,7 @@ if (selectedSeats.length >= 10) {
             </div>
             <div> <strong>price</strong>
             <br />
-            <p>{selectedSeats?.length * seatPrice}</p>
+            <p>{selectedSeats?.length * price}</p>
             </div>
           </div>
           <div className='flex justify-between'>
@@ -205,4 +230,4 @@ if (selectedSeats.length >= 10) {
   );
 };
 
-export default BookSeat;
+export default SelectSeat;

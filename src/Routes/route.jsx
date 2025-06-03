@@ -7,7 +7,7 @@ import Layout from "../layout/Section_Layout"
 import Home from "../Pages/Home/home"
 import About from '../Pages/About/about'
 import ReserveTickets from "../components/ReserveTickets/ReserveTickets"
-import BookSeat from "../components/ReserveTickets/BookSeat"
+import SelectSeat from "../components/ReserveTickets/SelectSeat"
 import TicketReceipt from "../components/ReserveTickets/TicketReceipt"
 import Terminals from "../Pages/Terminals/terminals"
 import Contact from "../Pages/Contact/contact"
@@ -53,7 +53,7 @@ const RouteComponent=()=>{
         />
          <Route 
         path="/book-seat"
-        element={<Layout component={BookSeat} navbar={true} footer={true}/>}
+        element={<Layout component={SelectSeat} navbar={true} footer={true}/>}
         />
 
     </Routes>
