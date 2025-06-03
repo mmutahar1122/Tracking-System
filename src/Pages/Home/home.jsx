@@ -191,7 +191,7 @@ const Home = () => {
                   >
                     <div className="flex justify-between">
                       <p>{item?.from}</p>
-                      <p>--- {item?.duration} ---</p>
+                      {/* <p>--- {item?.duration} ---</p> */}
                       <p>{item?.to}</p>
                     </div>
                     <div>{item?.features}</div>
