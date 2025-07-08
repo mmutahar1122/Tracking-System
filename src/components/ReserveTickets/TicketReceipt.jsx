@@ -6,9 +6,9 @@ import { useRef } from 'react';
 
 const TicketReceipt = () => {
   const location = useLocation();
-  const { TotalPrice, BusNo, To, From, selectedSeats, userData } = location.state || {};
+  const { name,totalPrice, busNo, to, from, seatSelected,date, cnic } = location.state.confirmSeats || {};
   const receiptRef = useRef(null);
-
+console.log("location.state",location.state.confirmSeats);
   const handleDownload = async () => {
     const canvas = await html2canvas(receiptRef.current);
     const imgData = canvas.toDataURL('image/png');
@@ -29,35 +29,35 @@ const TicketReceipt = () => {
             <p className="text-center font-bold text-lg mb-4">Details</p>
             <div className="grid grid-cols-2 gap-2 text-sm">
               <p className="font-bold">NAME:</p>
-              <p>{userData?.name}</p>
+              <p>{name}</p>
 
               <p className="font-bold">DATE:</p>
-              <p>{userData?.date}</p>
+              <p>{date}</p>
 
               <p className="font-bold">TIME:</p>
               <p>10:30 AM</p>
 
-              <p className="font-bold">RESERVED:</p>
-              <p>{selectedSeats?.join(', ')}</p>
+              <p className="font-bold">SEAT NO:</p>
+              <p>{seatSelected?.join(', ')}</p>
 
               <p className="font-bold">FROM:</p>
-              <p>{From}</p>
+              <p>{from}</p>
 
               <p className="font-bold">TO:</p>
-              <p>{To}</p>
+              <p>{to}</p>
 
               <p className="font-bold">BUS NO:</p>
-              <p>{BusNo}</p>
+              <p>{busNo}</p>
 
               <p className="font-bold">AMOUNT:</p>
-              <p>{TotalPrice}</p>
+              <p>{totalPrice}</p>
             </div>
           </div>
 
           <div>
             <p className="text-center font-bold">QR Code</p>
             <QRCode
-              value={`Bus No: ${BusNo}, Total Price: ${TotalPrice}, CNIC: ${userData?.cnic}`}
+              value={`Bus No: ${busNo}, Total Price: ${totalPrice}, CNIC: ${cnic}`}
               className="w-[200px]"
             />
           </div>

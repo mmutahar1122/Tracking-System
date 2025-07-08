@@ -72,7 +72,9 @@ const ReserveTickets=(data)=>{
       console.log("--from,to--",from,to)
 navigate('/book-seat',{state:{price,busNo,from,to}})
     }
-
+const locationTracker=()=>{
+  navigate('/live-location');
+}
 
     return <>
      {/* <div className='flex flex-wrap gap-2 mx-auto mt-4 justify-center mb-2'>
@@ -105,12 +107,18 @@ navigate('/book-seat',{state:{price,busNo,from,to}})
                 </div>
             <div className='flex justify-between items-center mt-5'>
               <div className='font-medium'>Rs. {item.price}</div>
-              <div>
+              <div className="">
                 <button
-                  className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
                   onClick={() => handleReserveClick({price: item.price, busNo: item.busNo, from:item.from, to:item.to })}
                 >
                   Reserve Seat
+                </button>
+                 <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => locationTracker()}
+                >
+                  Live Location
                 </button>
               </div>
             </div>
@@ -129,10 +137,16 @@ navigate('/book-seat',{state:{price,busNo,from,to}})
               <div className='font-bold'>Rs. {item.price}</div>
               <div>
                 <button
-                  className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
+                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
                   onClick={() => handleReserveClick(item)}
                 >
                   Reserve Seat
+                </button>
+                 <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => locationTracker()}
+                >
+                  Live Location
                 </button>
               </div>
             </div>
@@ -156,6 +170,12 @@ navigate('/book-seat',{state:{price,busNo,from,to}})
                 >
                   Reserve Seat
                 </button>
+                 <button
+                  className='bg-red-700 text-white p-2 m-1  m-1 rounded-lg cursor-pointer'
+                  onClick={() => locationTracker()}
+                >
+                  Live Location
+                </button>
               </div>
             </div>
           </div>
@@ -173,10 +193,16 @@ navigate('/book-seat',{state:{price,busNo,from,to}})
               <div className='font-bold'>Rs. {item.price}</div>
               <div>
                 <button
-                  className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
+                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
                   onClick={() => handleReserveClick(item)}
                 >
                   Reserve Seat
+                </button>
+                 <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => locationTracker()}
+                >
+                  Live Location
                 </button>
               </div>
             </div>
@@ -195,11 +221,18 @@ navigate('/book-seat',{state:{price,busNo,from,to}})
               <div className='font-bold'>Rs. {item.price}</div>
               <div>
                 <button
-                  className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
+                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
                   onClick={() => handleReserveClick(item)}
                 >
                   Reserve Seat
                 </button>
+                 <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => locationTracker()}
+                >
+                  Live Location
+                </button>
+                
               </div>
             </div>
           </div>
@@ -217,10 +250,16 @@ navigate('/book-seat',{state:{price,busNo,from,to}})
               <div className='font-bold'>Rs. {item.price}</div>
               <div>
                 <button
-                  className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
+                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
                   onClick={() => handleReserveClick(item)}
                 >
                   Reserve Seat
+                </button>
+                 <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => locationTracker()}
+                >
+                  Live Location
                 </button>
               </div>
             </div>

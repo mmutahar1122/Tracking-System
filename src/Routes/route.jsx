@@ -11,6 +11,7 @@ import SelectSeat from "../components/ReserveTickets/SelectSeat"
 import TicketReceipt from "../components/ReserveTickets/TicketReceipt"
 import Terminals from "../Pages/Terminals/terminals"
 import Contact from "../Pages/Contact/contact"
+import LiveLocation from "../components/Location/location"
 
 
 
@@ -54,6 +55,10 @@ const RouteComponent=()=>{
          <Route 
         path="/book-seat"
         element={<Layout component={SelectSeat} navbar={true} footer={true}/>}
+        />
+         <Route 
+        path="/live-location"
+        element={<Layout component={LiveLocation} navbar={true} footer={true}/>}
         />
 
     </Routes>
