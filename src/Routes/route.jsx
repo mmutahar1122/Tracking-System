@@ -12,6 +12,7 @@ import TicketReceipt from "../components/ReserveTickets/TicketReceipt"
 import Terminals from "../Pages/Terminals/terminals"
 import Contact from "../Pages/Contact/contact"
 import LiveLocation from "../components/Location/location"
+import EmergencyMessage from "../components/alertmsg/alertmsg"
 
 
 
@@ -59,6 +60,10 @@ const RouteComponent=()=>{
          <Route 
         path="/live-location"
         element={<Layout component={LiveLocation} navbar={true} footer={true}/>}
+        />
+        <Route 
+        path="/emergencyMessage"
+        element={<Layout component={EmergencyMessage} navbar={true} footer={true}/>}
         />
 
     </Routes>

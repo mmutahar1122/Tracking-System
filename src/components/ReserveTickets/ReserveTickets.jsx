@@ -76,6 +76,11 @@ const locationTracker=()=>{
   navigate('/live-location');
 }
 
+const EmergencyAlert=()=>{
+  navigate('/emergencyMessage');
+  
+}
+
     return <>
      {/* <div className='flex flex-wrap gap-2 mx-auto mt-4 justify-center mb-2'>
    <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600'  data-aos="zoom-in">
@@ -120,6 +125,12 @@ const locationTracker=()=>{
                 >
                   Live Location
                 </button>
+                <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => EmergencyAlert()}
+                >
+                  Panic Button
+                </button>
               </div>
             </div>
           </div>
@@ -147,6 +158,12 @@ const locationTracker=()=>{
                   onClick={() => locationTracker()}
                 >
                   Live Location
+                </button>
+                <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => EmergencyAlert()}
+                >
+                  Panic Button
                 </button>
               </div>
             </div>
@@ -176,6 +193,12 @@ const locationTracker=()=>{
                 >
                   Live Location
                 </button>
+                <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => EmergencyAlert()}
+                >
+                  Panic Button
+                </button>
               </div>
             </div>
           </div>
@@ -203,6 +226,12 @@ const locationTracker=()=>{
                   onClick={() => locationTracker()}
                 >
                   Live Location
+                </button>
+                <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => EmergencyAlert()}
+                >
+                  Panic Button
                 </button>
               </div>
             </div>
@@ -232,6 +261,12 @@ const locationTracker=()=>{
                 >
                   Live Location
                 </button>
+                <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => EmergencyAlert()}
+                >
+                  Panic Button
+                </button>
                 
               </div>
             </div>
@@ -260,6 +295,12 @@ const locationTracker=()=>{
                   onClick={() => locationTracker()}
                 >
                   Live Location
+                </button>
+                <button
+                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
+                  onClick={() => EmergencyAlert()}
+                >
+                  Panic Button
                 </button>
               </div>
             </div>
