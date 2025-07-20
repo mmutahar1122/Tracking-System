@@ -17,17 +17,36 @@ totalPrice:'',
 }
 const SelectSeat = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [confirmSeats,setConfirmSeats]= useState(initialValue)
+  const [confirmSeats,setConfirmSeats]= useState(initialValue);
+  const [bookedSeats, setBookedSeats] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const { price, busNo, from, to } = location.state;
 
- const bookedSeats = localStorage.getItem('selectedSeats',selectedSeats);
- console.log("bookedSeats",bookedSeats)
+//  const bookedSeats = localStorage.getItem('selectedSeats',selectedSeats);
+//  console.log("bookedSeats",bookedSeats)
 
- useEffect(()=>{
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/bookedSeates');
+      const data = await response.json();
 
- },[])
+      // Filter bookings based on current route
+      const filteredSeats = data
+        .filter((booking) => booking.from === from && booking.to === to)
+        .flatMap((booking) => booking.seatSelected); // assuming seatSelected is an array
+
+      setBookedSeats(filteredSeats);
+    } catch (error) {
+      console.error('Error fetching booked seats:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+
  
  const ReserveSeat = (seatNo) => {
   setSelectedSeats((prev) => {
@@ -112,30 +131,38 @@ console.log("confoimr SEat", confirmSeats)
                     const seatNo = rowIndex * 4 + offset + 1;
                     return (
                       <div
-                        key={seatNo}
-                        className={`cursor-pointer text-center border rounded ${
-                          selectedSeats.includes(seatNo) ? 'bg-red-200' : ''
-                        }`}
-                        onClick={() => ReserveSeat(seatNo)}
-                      >
-                        <img src={Seat} alt={`Seat ${seatNo}`} className="md:w-[70px] w-[50px]" />
-                        <p className="text-sm">Seat {seatNo}</p>
-                      </div>
+  key={seatNo}
+  className={`cursor-pointer text-center border rounded 
+    ${bookedSeats.includes(seatNo) ? 'bg-gray-400 cursor-not-allowed' : ''}
+    ${selectedSeats.includes(seatNo) ? 'bg-red-200' : ''}
+  `}
+  onClick={() => {
+    if (!bookedSeats.includes(seatNo)) ReserveSeat(seatNo);
+  }}
+>
+  <img src={Seat} alt={`Seat ${seatNo}`} className="md:w-[70px] w-[50px]" />
+  <p className="text-sm">Seat {seatNo}</p>
+</div>
+
                     );
                   })}
                   {[2, 3].map((offset) => {
                     const seatNo = rowIndex * 4 + offset + 1;
                     return (
                       <div
-                        key={seatNo}
-                        className={`cursor-pointer text-center border rounded ${
-                          selectedSeats.includes(seatNo) ? 'bg-red-200' : ''
-                        }`}
-                        onClick={() => ReserveSeat(seatNo)}
-                      >
-                        <img src={Seat} alt={`Seat ${seatNo}`} className="md:w-[70px] w-[50px]" />
-                        <p className="text-sm">Seat {seatNo}</p>
-                      </div>
+  key={seatNo}
+  className={`cursor-pointer text-center border rounded 
+    ${bookedSeats.includes(seatNo) ? 'bg-gray-400 cursor-not-allowed' : ''}
+    ${selectedSeats.includes(seatNo) ? 'bg-red-200' : ''}
+  `}
+  onClick={() => {
+    if (!bookedSeats.includes(seatNo)) ReserveSeat(seatNo);
+  }}
+>
+  <img src={Seat} alt={`Seat ${seatNo}`} className="md:w-[70px] w-[50px]" />
+  <p className="text-sm">Seat {seatNo}</p>
+</div>
+
                     );
                   })}
                 </div>
