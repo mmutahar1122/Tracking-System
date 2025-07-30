@@ -22,35 +22,49 @@ const Signin = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const responce = await fetch("http://localhost:3001/checkuser", {
+  try {
+    const response = await fetch("http://localhost:3001/checkuser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
     });
-    if (responce.ok) {
-      const data = await responce.json();
+
+    const data = await response.json();
+
+    if (response.ok) {
       console.log("Data", data);
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        console.log("Login successful!");
+      } else {
+        console.log("Login failed: No token received.");
+      }
+
       toast.success(data.message);
-      setTimeout(()=>{
-      setUser({
-        email:'',
-        password:''
-      })
-      navigate("/home");
-      },1000)
-    }
-    if (!responce.ok) {
-      const data = await responce.json();
-      console.log("Data", data);
-      toast.error(data.message);
+
+      setTimeout(() => {
+        setUser({
+          email: "",
+          password: "",
+        });
+        navigate("/home");
+      }, 1000);
+    } else {
+      toast.error(data.message || "Login failed");
     }
 
-    console.log("responce", responce);
-  };
+    console.log("response", response);
+  } catch (error) {
+    console.error("Error during login:", error);
+    toast.error("Something went wrong. Please try again later.");
+  }
+};
+
 
   const validationSchema = Yup.object({
     email: Yup.string()
