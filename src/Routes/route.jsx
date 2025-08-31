@@ -1,5 +1,6 @@
 
 import {Routes, Route } from "react-router-dom"
+import DriverSignup from "../Authentication/driverSignup"
 import Signup from "../Authentication/signup"
 import Signin from "../Authentication/signin"
 import AuthLayout from "../layout/authLayout"
@@ -24,6 +25,10 @@ const RouteComponent=()=>{
         <Route 
         path="/signup"
         element={<AuthLayout component={Signup}/>}
+        />
+         <Route 
+        path="/driver-signup"
+        element={<AuthLayout component={DriverSignup}/>}
         />
          <Route 
         path="/"

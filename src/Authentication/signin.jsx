@@ -1,17 +1,26 @@
 import { useNavigate, Link } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
-import { use } from "react";
-import { data } from "autoprefixer";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signin = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  // Yup validation schema
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,69 +33,39 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const responce = await fetch("http://localhost:3005/api/auth/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
-    if (responce.ok) {
-      const data = await responce.json();
-      console.log("Data", data);
-      toast.success(data.message);
-      setTimeout(()=>{
-      setUser({
-        email:'',
-        password:''
-      })
-      navigate("/home");
-      },1000)
+    // Validate with Yup
+    try {
+      await validationSchema.validate(user, { abortEarly: false });
+      setErrors({}); // Clear previous errors
+
+      const response = await fetch("http://localhost:3005/api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success(data.message);
+        // console.log(data.token)          // console jwt token here
+        setTimeout(() => {
+          setUser({ email: "", password: "" });
+          navigate("/home");
+        }, 1000);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      if (err.inner) {
+        const formErrors = {};
+        err.inner.forEach((error) => {
+          formErrors[error.path] = error.message;
+        });
+        setErrors(formErrors);
+      }
     }
-    if (!responce.ok) {
-      const data = await responce.json();
-      console.log("Data", data);
-      toast.error(data.message);
-    }
-
-    console.log("responce", responce);
-  };
-
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-  });
-
-  const onSubmit = async (values, { resetForm }) => {
-    const responce = await fetch("http://localhost:3005/api/auth/checkuser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
-
-    console.log("responce", responce);
-
-    // const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-    // const userFound = existingUsers.find(
-    //   (user) => user.email === values.email && user.password === values.password
-    // );
-    // console.log("userFound",userFound)
-    if (responce.ok) {
-      toast.success("Signed in successfully!");
-      setTimeout(() => {
-        navigate("/home");
-      }, 1000);
-    } else {
-      toast.error("Incorrect Email or Password");
-    }
-
-    resetForm();
   };
 
   return (
@@ -107,7 +86,7 @@ const Signin = () => {
 
               <form
                 className="space-y-4 md:space-y-6"
-                onSubmit={(e) => handleSubmit(e)}
+                onSubmit={handleSubmit}
               >
                 <div>
                   <label
@@ -126,7 +105,9 @@ const Signin = () => {
                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
-                  {/* <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" /> */}
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
                 </div>
 
                 <div>
@@ -146,7 +127,9 @@ const Signin = () => {
                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
-                  {/* <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" /> */}
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                  )}
                 </div>
 
                 <button
