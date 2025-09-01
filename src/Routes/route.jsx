@@ -30,12 +30,12 @@ const RouteComponent=()=>{
         path="/driver-signup"
         element={<AuthLayout component={DriverSignup}/>}
         />
-         <Route 
+         {/* <Route 
         path="/"
         element={<AuthLayout component={Signin}/>}
-        />
+        /> */}
         <Route 
-        path="/home"
+        path="/"
         element={<Layout component={Home} navbar={true} footer={true}/>}
         />
          <Route 
