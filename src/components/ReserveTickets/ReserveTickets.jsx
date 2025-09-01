@@ -1,8 +1,8 @@
-import { useLocation,useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
   const lahoreRoutes = [
   { from: 'Lahore', to: 'Multan', duration: '6 Hrs', features: 'WiFi Snacks AC Charging Port', price: 1400, busNo: 'lhr-5001', dispatchTime: '07:00 AM', locat: 'Thokar Niaz Baig Terminal, Lahore' },
   { from: 'Lahore', to: 'Faisalabad', duration: '2 Hrs', features: 'AC Charging Port', price: 800, busNo: 'lhr-5002', dispatchTime: '08:30 AM', locat: 'Kalma Chowk Terminal, Lahore' },
@@ -55,262 +55,187 @@ import 'aos/dist/aos.css';
   { from: 'Sialkot', to: 'Karachi', duration: '17 Hrs', features: 'WiFi Snacks AC Charging Port Entertainment', price: 3400, busNo: 'skt-4006', dispatchTime: '06:00 PM', locat: 'Airport Road Terminal, Sialkot' },
 ];
 
-            
-const ReserveTickets=(data)=>{
-    const location = useLocation();
-    // console.log('data',location.state?.data);
-    const receiveData= location.state?.data;
-    const navigate=useNavigate();
-     useEffect(() => {
-      AOS.init({
-        duration: 1000, // optional animation duration
-        // once: true,     // animation happens only once
-      });
-    }, []);
+            const routesByCity = {
+  Lahore: lahoreRoutes,
+  Faisalabad: faisalabadRoutes,
+  Karachi: karachiRoutes,
+  Islamabad: islamabadRoutes,
+  Multan: multanRoutes,
+  Sialkot: sialkotRoutes,
+};
 
-    const handleReserveClick=({price,busNo,from,to})=>{
-      console.log("--from,to--",from,to)
-navigate('/book-seat',{state:{price,busNo,from,to}})
+const ReserveTickets = (data) => {
+const location = useLocation();
+  const receiveData = location.state?.data;
+  console.log("receive data", receiveData);
+  const navigate = useNavigate();
+
+  // state for inputs
+  const [departure, setDeparture] = useState("");
+  const [arrival, setArrival] = useState("");
+  const [date, setDate] = useState("");
+  const [arrivalOptions, setArrivalOptions] = useState([]);
+  const [filteredRoutes, setFilteredRoutes] = useState([]);
+
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+
+  // update arrival options whenever departure changes
+  useEffect(() => {
+    if (departure && routesByCity[departure]) {
+      const destinations = routesByCity[departure].map((r) => r.to);
+      setArrivalOptions(destinations);
+    } else {
+      setArrivalOptions([]);
     }
-const locationTracker=()=>{
-  navigate('/live-location');
-}
+    setArrival("");
+  }, [departure]);
 
-const EmergencyAlert=()=>{
-  navigate('/emergencyMessage');
-  
-}
+  const handleReserveClick = ({ price, busNo, from, to }) => {
+    navigate("/book-seat", { state: { price, busNo, from, to } });
+  };
 
-    return <>
-     {/* <div className='flex flex-wrap gap-2 mx-auto mt-4 justify-center mb-2'>
-   <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600'  data-aos="zoom-in">
-    <div className='flex justify-between'><p>{receiveData?.from}</p><p>{receiveData?.duration}</p><p>{receiveData?.to}</p></div>
-    <div>
-      {receiveData?.features}
-    </div>
-    <div className='flex justify-between items-center mt-5'>
-      <div className='font-bold'>Rs. {receiveData?.price}</div>
-<div><button className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'>Reserve Seat</button></div> </div>
-</div>
-</div> */}
-<div className='flex flex-wrap gap-2 mx-auto mt-4 justify-center mb-2'>
-  {
-    receiveData?.from === 'Faisalabad'
-      ? faisalabadRoutes.map((item, index) => (
-          <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600' key={index} data-aos="zoom-in">
-            <div className='flex justify-between'>
+  const locationTracker = () => navigate("/live-location");
+  const EmergencyAlert = () => navigate("/emergencyMessage");
+
+  // 🔎 Search button click
+  const handleSearch = () => {
+    if (departure && arrival) {
+      const routes = routesByCity[departure] || [];
+      const filtered = routes.filter((r) => r.to === arrival);
+      setFilteredRoutes(filtered);
+    } else {
+      setFilteredRoutes([]);
+    }
+  };
+    return  <>
+      {/* Inputs */}
+      <div className="flex justify-center">
+        <div className="flex flex-col md:flex-row gap-2 text-2xl text-black mt-4 w-full md:w-3/4">
+          {/* Departure */}
+          <input
+            type="text"
+            list="cities"
+            value={departure}
+            onChange={(e) => setDeparture(e.target.value ? e.target.value : receiveData.from)}
+            placeholder="Departure"
+            className="rounded-xl p-2 h-12 font-normal border border-red-700 w-full md:w-1/4
+                   focus:outline-none focus:border-red-700 focus:ring-2 focus:ring-red-300"
+          />
+          <datalist id="cities">
+            {Object.keys(routesByCity).map((city) => (
+              <option key={city} value={city} />
+            ))}
+          </datalist>
+
+          {/* Arrival */}
+          <input
+            type="text"
+            list="arrivalCities"
+            value={arrival}
+            onChange={(e) => setArrival(e.target.value ? e.target.value : receiveData.to)}
+            placeholder="Arrival"
+            disabled={!departure}
+            className="rounded-xl p-2 h-12 font-normal border border-red-700 w-full md:w-1/4
+                   focus:outline-none focus:border-red-700 focus:ring-2 focus:ring-red-300 disabled:bg-gray-200"
+          />
+          <datalist id="arrivalCities">
+            {arrivalOptions.map((city, idx) => (
+              <option key={idx} value={city} />
+            ))}
+          </datalist>
+
+          {/* Date */}
+          {/* <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="rounded-xl p-2 h-12 font-normal border border-red-700 w-full md:w-1/4
+                   focus:outline-none focus:border-red-700 focus:ring-2 focus:ring-red-300"
+          /> */}
+
+          {/* 🔎 Search button */}
+          <button
+            onClick={handleSearch}
+            className="bg-red-700 text-white rounded-xl p-2 h-12 font-medium w-full md:w-1/6 hover:bg-red-800"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+
+      {/* Routes */}
+      <div className="flex flex-wrap gap-2 mx-auto mt-4 justify-center mb-2">
+        {filteredRoutes.length > 0 ? (
+          filteredRoutes.map((item, index) => (
+            <div
+              className="w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600"
+              key={index}
+              data-aos="zoom-in"
+            >
+              <div className="flex justify-between">
                 <p>{item.from}</p>
-              <p>{item.dispatchTime}</p>
-              <p>{item.to}</p>
-            </div>
-            <div><span className="font-medium">Features: </span>{item.features}</div>
-              <div className="">
-
-                <p><span className="font-medium">Dispatch:</span> {item.dispatchTime}</p>
-                <p><span className="font-medium">Location:</span> {item.locat}</p>
-                <p><span className="font-medium">Bus No:</span> {item.busNo}</p>
+                <p>{item.dispatchTime}</p>
+                <p>{item.to}</p>
+              </div>
+              <div>
+                <span className="font-medium">Features: </span>
+                {item.features}
+              </div>
+              <div>
+                <p>
+                  <span className="font-medium">Dispatch:</span>{" "}
+                  {item.dispatchTime}
+                </p>
+                <p>
+                  <span className="font-medium">Location:</span> {item.locat}
+                </p>
+                <p>
+                  <span className="font-medium">Bus No:</span> {item.busNo}
+                </p>
+              </div>
+              <div className="flex justify-between items-center mt-5">
+                <div className="font-medium">Rs. {item.price}</div>
+                <div>
+                  <button
+                    className="bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer"
+                    onClick={() =>
+                      handleReserveClick({
+                        price: item.price,
+                        busNo: item.busNo,
+                        from: item.from,
+                        to: item.to,
+                      })
+                    }
+                  >
+                    Reserve Seat
+                  </button>
+                  <button
+                    className="bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer"
+                    onClick={locationTracker}
+                  >
+                    Live Location
+                  </button>
+                  <button
+                    className="bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer"
+                    onClick={EmergencyAlert}
+                  >
+                    Panic Button
+                  </button>
                 </div>
-            <div className='flex justify-between items-center mt-5'>
-              <div className='font-medium'>Rs. {item.price}</div>
-              <div className="">
-                <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick({price: item.price, busNo: item.busNo, from:item.from, to:item.to })}
-                >
-                  Reserve Seat
-                </button>
-                 <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => locationTracker()}
-                >
-                  Live Location
-                </button>
-                <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => EmergencyAlert()}
-                >
-                  Panic Button
-                </button>
               </div>
             </div>
-          </div>
-        ))
-      : receiveData?.from === 'Lahore'
-      ? lahoreRoutes.map((item, index) => (
-          <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600' key={index}  data-aos="zoom-in">
-            <div className='flex justify-between'>
-              <p>{item.from}</p>
-              <p>{item.dispatchTime}</p>
-              <p>{item.to}</p>
-            </div>
-            <div>{item.features}</div>
-            <div className='flex justify-between items-center mt-5'>
-              <div className='font-bold'>Rs. {item.price}</div>
-              <div>
-                <button
-                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick(item)}
-                >
-                  Reserve Seat
-                </button>
-                 <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => locationTracker()}
-                >
-                  Live Location
-                </button>
-                <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => EmergencyAlert()}
-                >
-                  Panic Button
-                </button>
-              </div>
-            </div>
-          </div>
-        ))
-      :receiveData?.from === 'Karachi'
-      ? karachiRoutes.map((item, index) => (
-          <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600' key={index}  data-aos="zoom-in">
-            <div className='flex justify-between'>
-              <p>{item.from}</p>
-              <p>{item.dispatchTime}</p>
-              <p>{item.to}</p>
-            </div>
-            <div>{item.features}</div>
-            <div className='flex justify-between items-center mt-5'>
-              <div className='font-bold'>Rs. {item.price}</div>
-              <div>
-                <button
-                  className='bg-red-700 text-white p-2 rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick(item)}
-                >
-                  Reserve Seat
-                </button>
-                 <button
-                  className='bg-red-700 text-white p-2 m-1  m-1 rounded-lg cursor-pointer'
-                  onClick={() => locationTracker()}
-                >
-                  Live Location
-                </button>
-                <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => EmergencyAlert()}
-                >
-                  Panic Button
-                </button>
-              </div>
-            </div>
-          </div>
-        ))
-      :receiveData?.from === 'Islamabad'
-      ? islamabadRoutes.map((item, index) => (
-          <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600' key={index}  data-aos="zoom-in">
-            <div className='flex justify-between'>
-              <p>{item.from}</p>
-              <p>{item.dispatchTime}</p>
-              <p>{item.to}</p>
-            </div>
-            <div>{item.features}</div>
-            <div className='flex justify-between items-center mt-5'>
-              <div className='font-bold'>Rs. {item.price}</div>
-              <div>
-                <button
-                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick(item)}
-                >
-                  Reserve Seat
-                </button>
-                 <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => locationTracker()}
-                >
-                  Live Location
-                </button>
-                <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => EmergencyAlert()}
-                >
-                  Panic Button
-                </button>
-              </div>
-            </div>
-          </div>
-        ))
-      :receiveData?.from === 'Multan'
-      ? multanRoutes.map((item, index) => (
-          <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600' key={index}  data-aos="zoom-in">
-            <div className='flex justify-between'>
-              <p>{item.from}</p>
-              <p>{item.dispatchTime}</p>
-              <p>{item.to}</p>
-            </div>
-            <div>{item.features}</div>
-            <div className='flex justify-between items-center mt-5'>
-              <div className='font-bold'>Rs. {item.price}</div>
-              <div>
-                <button
-                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick(item)}
-                >
-                  Reserve Seat
-                </button>
-                 <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => locationTracker()}
-                >
-                  Live Location
-                </button>
-                <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => EmergencyAlert()}
-                >
-                  Panic Button
-                </button>
-                
-              </div>
-            </div>
-          </div>
-        ))
-      :receiveData?.from === 'Sialkot'
-      ? sialkotRoutes.map((item, index) => (
-          <div className='w-1/2 min-w-[310px] border rounded-lg p-2 bg-gray-100 text-gray-600' key={index}  data-aos="zoom-in">
-            <div className='flex justify-between'>
-              <p>{item.from}</p>
-              <p>{item.dispatchTime}</p>
-              <p>{item.to}</p>
-            </div>
-            <div>{item.features}</div>
-            <div className='flex justify-between items-center mt-5'>
-              <div className='font-bold'>Rs. {item.price}</div>
-              <div>
-                <button
-                  className='bg-red-700 text-white p-2 m-1  rounded-lg cursor-pointer'
-                  onClick={() => handleReserveClick(item)}
-                >
-                  Reserve Seat
-                </button>
-                 <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => locationTracker()}
-                >
-                  Live Location
-                </button>
-                <button
-                  className='bg-red-700 text-white p-2 m-1 rounded-lg cursor-pointer'
-                  onClick={() => EmergencyAlert()}
-                >
-                  Panic Button
-                </button>
-              </div>
-            </div>
-          </div>
-        ))
-      : null
-  }
-</div>
-
+          ))
+        ) : (
+          <p className="text-gray-500 mt-4">
+            {departure && arrival
+              ? "No buses found for this route."
+              : "Please select departure, arrival and click Search."}
+          </p>
+        )}
+      </div>
     </>
-
 }
 export default ReserveTickets

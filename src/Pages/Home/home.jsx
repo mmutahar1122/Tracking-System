@@ -73,14 +73,19 @@ const Home = () => {
           alt=""
           className="w-full h-[700px] object-cover opacity-75"
         />
-        <h1 className="absolute top-80 left-1/2 transform -translate-x-1/2 z-10 text-white md:text-5xl text-xl text-center font-bold">
+        <div className="absolute top-80 left-1/2 transform -translate-x-1/2 z-10 text-white md:text-5xl text-xl text-center font-bold">
           <div data-aos="zoom-in">
+            <div>
             <span className="block mb-2">Welcome to</span>
             <span className="bg-[#FFCE32] text-red-700 rounded-xl px-2">
               SMART SAFAR
             </span>
+            </div>
+          <div className="mt-3">
+            <button className="bg-red-700 rounded-xl p-2 font-medium" onClick={()=>navigate('/reserve-ticket')}>Reserve Seat</button>
           </div>
-        </h1>
+          </div>
+        </div>
 
         {/* <h1 className="absolute top-80 left-1/2 transform -translate-x-1/2 z-10 text-white md:text-5xl  text-xl text-center font-bold">Welcome to <br /><span className="bg-[#FFCE32] text-red-600 rounded-xl px-2">SMART SAFAR</span></h1> */}
       </div>
